@@ -1,8 +1,7 @@
-package context
+package ctxbox
 
 import (
 	"context"
-	"github.com/networm6/gopherBox/shutdown"
 )
 
 func Opened(_ctx context.Context) bool {
@@ -12,8 +11,4 @@ func Opened(_ctx context.Context) bool {
 	default:
 		return true
 	}
-}
-
-func Wait() {
-	shutdown.New().Listen()
 }

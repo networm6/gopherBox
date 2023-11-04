@@ -1,20 +1,11 @@
-package net
+package netbox
 
 import (
 	"github.com/net-byte/go-gateway"
 	"log"
 	"net"
-	"os/exec"
 	"strings"
 )
-
-type Address struct {
-	ServerTunnelIP   string `json:"server_ip"`
-	ServerTunnelIPv6 string `json:"server_ipv6"`
-	CIDR             string `json:"cidr"`
-	CIDRv6           string `json:"cidr_ipv6"`
-	Key              string `json:"key"`
-}
 
 // GetInterface returns the name of interface
 func GetInterface() (name string) {
@@ -72,21 +63,6 @@ func LookupIP(domain string) net.IP {
 		return nil
 	}
 	return ips[0]
-}
-
-// ExecCmd executes the given command
-func ExecCmd(c string, args ...string) string {
-	log.Printf("exec %v %v", c, args)
-	cmd := exec.Command(c, args...)
-	out, err := cmd.Output()
-	if err != nil {
-		log.Println("failed to exec cmd:", err)
-	}
-	if len(out) == 0 {
-		return ""
-	}
-	s := string(out)
-	return strings.ReplaceAll(s, "\n", "")
 }
 
 // DiscoverGateway returns the local gateway IP address
@@ -155,7 +131,7 @@ func GetIPv4Src(packet []byte) net.IP {
 	return net.IPv4(packet[12], packet[13], packet[14], packet[15])
 }
 
-// GEtIPv4Dst returns the IPv4 destination address of the packet
+// GetIPv4Dst returns the IPv4 destination address of the packet
 func GetIPv4Dst(packet []byte) net.IP {
 	return net.IPv4(packet[16], packet[17], packet[18], packet[19])
 }

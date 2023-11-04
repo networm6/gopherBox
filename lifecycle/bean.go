@@ -7,7 +7,7 @@ type LifeInterface interface {
 	Destroy()
 }
 
-type LifeClass[T interface{}] struct {
+type LifeClass struct {
 	LifeInterface
 	_ctx    context.Context
 	_cancel context.CancelFunc

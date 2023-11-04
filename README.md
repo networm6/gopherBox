@@ -1,2 +1,3 @@
 # gopherBox
-gopherBox is a lib I am using.
+
+GopherBox is my own golang's framework.
