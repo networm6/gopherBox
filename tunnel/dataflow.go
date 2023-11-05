@@ -8,7 +8,7 @@ import (
 func (tun *Tunnel) readFromTunnel() {
 	fun := tun._conf.MixinFunc
 	packet := make([]byte, tun._conf.BufferSize)
-	for ctxbox.Opened(*tun._ctx) {
+	for ctxbox.Opened(*tun.LifeCtx) {
 		num, err := tun._tunInterface.Read(packet)
 		tun.incrWrittenBytes(num)
 		if err != nil {
@@ -20,7 +20,7 @@ func (tun *Tunnel) readFromTunnel() {
 
 func (tun *Tunnel) writeToTunnel() {
 	fun := tun._conf.MixinFunc
-	for ctxbox.Opened(*tun._ctx) {
+	for ctxbox.Opened(*tun.LifeCtx) {
 		num, err := tun._tunInterface.Write(fun(<-tun.InputStream))
 		if err != nil {
 			continue

@@ -3,15 +3,15 @@ package tunnel
 import (
 	"context"
 	"fmt"
-	"github.com/net-byte/water"
 	"github.com/networm6/gopherBox/lifecycle"
+	"github.com/networm6/gopherBox/netbox/water"
 )
 
 // Tunnel 结构体
 type Tunnel struct {
 	lifecycle.LifeInterface
-	_ctx    *context.Context
-	_cancel *context.CancelFunc
+	LifeCtx    *context.Context
+	LifeCancel *context.CancelFunc
 
 	_conf         *TunConfig
 	_tunInterface *water.Interface
@@ -30,8 +30,8 @@ type Tunnel struct {
 func NewTunnel(parentCtx context.Context, readBytes, writtenBytes *uint64) *Tunnel {
 	ctx, cancel := context.WithCancel(parentCtx)
 	tunnel := &Tunnel{
-		_ctx:               &ctx,
-		_cancel:            &cancel,
+		LifeCtx:            &ctx,
+		LifeCancel:         &cancel,
 		_totalReadBytes:    readBytes,
 		_totalWrittenBytes: writtenBytes,
 		InputStream:        make(chan []byte),
@@ -56,7 +56,7 @@ func (tun *Tunnel) Start() {
 }
 
 func (tun *Tunnel) Destroy() {
-	(*tun._cancel)()
+	(*tun.LifeCancel)()
 	tun._destroyCB()
 	_ = tun._tunInterface.Close()
 	close(tun.OutputStream)
@@ -68,9 +68,7 @@ func (tun *Tunnel) createTunnelInterface() error {
 	CIDRv6 := tun._conf.CIDRv6
 	DeviceName := tun._conf.DeviceName
 
-	c := water.Config{
-		DeviceType: water.TUN,
-	}
+	c := water.Config{}
 	c.PlatformSpecificParams = water.PlatformSpecificParams{
 		Name:    DeviceName,
 		Network: []string{CIDRv4, CIDRv6},

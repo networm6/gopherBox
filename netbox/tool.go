@@ -1,7 +1,6 @@
 package netbox
 
 import (
-	"github.com/net-byte/go-gateway"
 	"log"
 	"net"
 	"strings"
@@ -70,9 +69,9 @@ func DiscoverGateway(ipv4 bool) string {
 	var ip net.IP
 	var err error
 	if ipv4 {
-		ip, err = gateway.DiscoverGatewayIPv4()
+		ip, err = DiscoverGatewayIPv4()
 	} else {
-		ip, err = gateway.DiscoverGatewayIPv6()
+		ip, err = DiscoverGatewayIPv6()
 	}
 	if err != nil {
 		log.Println(err)
