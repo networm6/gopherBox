@@ -1,4 +1,4 @@
-package strings
+package strbox
 
 import "sort"
 
